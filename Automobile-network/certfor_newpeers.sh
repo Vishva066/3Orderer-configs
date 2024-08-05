@@ -44,7 +44,7 @@ local peerid = "peer${peer_num}"
 
 local peerpw = "${peerid}pw"
 
-local url = "https://${peerid}:${peerpw}@localhost:${PORT}"
+local url = "https://${peerid}:${peerpw}@${ca_name}:${PORT}"
 
 #Registering new peer
 
@@ -59,7 +59,7 @@ cp "${PWD}/organizations/peerOrganizations/${ORG}.auto.com/msp/config.yaml" "${P
 #Generating tls certificates
 echo "Generating the ${peerid}-tls certificates, use --csr.hosts to specify Subject Alternative Names"
 
-fabric-ca-client enroll -u $url --caname $ca_name -M "${PWD}/organizations/peerOrganizations/${ORG}.auto.com/peers/${peer_name}/tls" --enrollment.profile tls --csr.hosts $peer_name --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG}/ca-cert.pem"
+fabric-ca-client enroll -u $url --caname $ca_name -M "${PWD}/organizations/peerOrganizations/${ORG}.auto.com/peers/${peer_name}/tls" --enrollment.profile tls --csr.hosts $peer_name --csr.hosts $peerid-$ORG  --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/${ORG}/ca-cert.pem"
 
 # Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
 
